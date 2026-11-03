@@ -15,7 +15,7 @@ const HOURS = {
   6: [[8, 14]],
 };
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const SLIDE_MS = 1500;   // the hero slider changes every 1.5 seconds
+const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds
 
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -89,6 +89,7 @@ const SLIDE_MS = 1500;   // the hero slider changes every 1.5 seconds
   const stage = document.getElementById('stage');
   const prods = [...stage.querySelectorAll('.prod')], words = [...stage.querySelectorAll('.w')], dots = document.getElementById('dots');
   const curEl = document.getElementById('cur'), nameEl = document.getElementById('slide-name');
+  hero.style.setProperty('--slide', SLIDE_MS + 'ms');   // the little timer in the dots follows the same speed
   const n = prods.length; let cur = 0, auto, swiped = false;
   const go = k => {
     cur = (k + n) % n;
@@ -182,6 +183,7 @@ const SLIDE_MS = 1500;   // the hero slider changes every 1.5 seconds
 
   // ---------- 1. departures board: the hours as split-flap rows, built from HOURS ----------
   const FD = 60;                                  // one half-flip, in ms
+  let gen = 0;                                    // bumped when the board is wiped, so half-finished flips from the last run stop
   const h24 = h => { const m = Math.round(h * 60); return String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
   const put = (c, ch) => { c._c = ch; for (const i of c.children) i.textContent = ch; c.classList.toggle('blank', ch === ' '); };
   const mkCell = () => { const c = document.createElement('span'); c.className = 'fc blank'; c.innerHTML = '<i class="a"></i><i class="b"></i><i class="ft"></i><i class="fb"></i>'; c._c = ' '; return c; };
@@ -194,21 +196,23 @@ const SLIDE_MS = 1500;   // the hero slider changes every 1.5 seconds
     const [a, b, ft, fb] = c.children, old = c._c;
     a.textContent = ch; fb.textContent = ch; ft.textContent = old; b.textContent = old;
     c.classList.remove('blank', 'go'); void c.offsetWidth; c.classList.add('go'); c._busy = true;
+    const tok = c._tok = (c._tok || 0) + 1;
     setTimeout(() => {
+      if (c._tok !== tok) return;
       put(c, ch); c.classList.remove('go'); c._busy = false;
       const w = c._want; c._want = null; if (w != null && w !== c._c) flip(c, w);
     }, FD * 2 + 20);
   };
   // write a word into a group of cells; letters/digits spin through a few random ones first
   const setText = (g, text, anim, delay = 0) => {
-    const chars = text.padEnd(g.children.length, ' ').slice(0, g.children.length).split('');
+    const chars = text.padEnd(g.children.length, ' ').slice(0, g.children.length).split(''), my = gen;
     [...g.children].forEach((c, i) => {
       const ch = chars[i];
       if (!anim || reduce){ put(c, ch); return; }
-      if (!/[A-Z0-9]/.test(ch)){ setTimeout(() => flip(c, ch), delay + i * 20); return; }
+      if (!/[A-Z0-9]/.test(ch)){ setTimeout(() => { if (my === gen) flip(c, ch); }, delay + i * 20); return; }
       const pool = /\d/.test(ch) ? '0123456789' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
       let k = 0; const steps = 3 + (i * 5 + 3) % 5;
-      const tick = () => { if (k++ < steps){ flip(c, pool[Math.random() * pool.length | 0]); setTimeout(tick, FD * 2 + 25); } else flip(c, ch); };
+      const tick = () => { if (my !== gen) return; if (k++ < steps){ flip(c, pool[Math.random() * pool.length | 0]); setTimeout(tick, FD * 2 + 25); } else flip(c, ch); };
       setTimeout(tick, delay + i * 22);
     });
   };
@@ -247,8 +251,17 @@ const SLIDE_MS = 1500;   // the hero slider changes every 1.5 seconds
       srEl.appendChild(li);
     });
   };
+  // the board replays its flip every time you scroll back to it: wipe it once it is fully off screen, flip it in again on the way back
+  const depEl = document.getElementById('dep');
+  const wipeBoard = () => { gen++; depEl.querySelectorAll('.fc').forEach(c => { c._tok = (c._tok || 0) + 1; c._busy = false; c._want = null; c.classList.remove('go'); put(c, ' '); }); };
   if (reduce){ boardOn = true; paintBoard(false); }
-  else new IntersectionObserver((es, o) => { if (es[0].isIntersecting){ o.disconnect(); boardOn = true; paintBoard(true, true); } }, {threshold:.2}).observe(document.getElementById('dep'));
+  else {
+    let wipeT;
+    new IntersectionObserver(es => es.forEach(e => {
+      if (e.intersectionRatio >= .2 && !boardOn){ clearTimeout(wipeT); boardOn = true; paintBoard(true, true); }
+      else if (!e.isIntersecting && boardOn){ boardOn = false; clearTimeout(wipeT); wipeT = setTimeout(wipeBoard, 300); }
+    }), {threshold:[0, .2]}).observe(depEl);
+  }
   // statuses (boarding / departed) and the clock keep up with the real time
   setInterval(() => { if (boardOn && !document.hidden) paintBoard(true, false); }, 20000);
 
@@ -277,23 +290,27 @@ const SLIDE_MS = 1500;   // the hero slider changes every 1.5 seconds
     const b = e.target.closest('[data-temp]'); if (!b) return;
     fcards.forEach(c => setFlip(c, b.dataset.temp === 'iced')); syncSwitch();
   });
-  // a little peek the first time each card scrolls in, so people know it flips
+  // a little peek each time a card scrolls in, so people know it flips
   if (!reduce){
-    const peekIO = new IntersectionObserver((es, o) => es.forEach(e => {
-      if (!e.isIntersecting) return; o.unobserve(e.target);
-      setTimeout(() => {
-        if (e.target.classList.contains('flipped')) return;
-        e.target.classList.add('peek');
-        e.target.firstElementChild.addEventListener('animationend', () => e.target.classList.remove('peek'), {once:true});
-      }, 900);
-    }), {threshold:.6});
+    const peekIO = new IntersectionObserver(es => es.forEach(e => {
+      const card = e.target;
+      if (e.intersectionRatio >= .6 && !card._seen){
+        card._seen = true;
+        card._peekT = setTimeout(() => {
+          if (card.classList.contains('flipped')) return;
+          card.classList.add('peek');
+          card.firstElementChild.addEventListener('animationend', () => card.classList.remove('peek'), {once:true});
+        }, 900);
+      } else if (!e.isIntersecting){ card._seen = false; clearTimeout(card._peekT); }
+    }), {threshold:[0, .6]});
     fcards.forEach(c => peekIO.observe(c));
   }
 
-  // reveal on entering the viewport
+  // reveal on entering the viewport, and undo it once the element is fully off screen so it plays again when you scroll back
   const io = new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-  }), {threshold:.15, rootMargin:'0px 0px -6% 0px'});
+    if (e.intersectionRatio >= .15) e.target.classList.add('in');
+    else if (!e.isIntersecting) e.target.classList.remove('in');
+  }), {threshold:[0, .15], rootMargin:'0px 0px -6% 0px'});
   document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
 
   // ---------- 4. a plane that flies as you scroll and lands at "Find us" ----------

@@ -57,20 +57,22 @@
 <section class="hero" id="hero">
   <h1 class="sr-only">Fly Me to the Brew: coffee, chai and matcha inside the YMCA lobby in Orlando</h1>
 
-  <!-- Floating drinks: they change on their own every 1.5 seconds. Click a side one, a dot, swipe, or use arrow keys.
+  <!-- Floating drinks: they change on their own every 3 seconds (SLIDE_MS in script.js). Click a side one, a dot, swipe, or use arrow keys.
        Order here = order of the big words below. -->
   <div class="stage" id="stage" data-scroll=".3">
-    <button class="prod" data-pos="0" type="button" aria-label="Show the house latte" style="--k:1.3"><span class="bob"><img src="assets/cut/latte.png" alt="An iced house latte with a Fly Me to the Brew sticker and a green straw" fetchpriority="high"></span></button>
-    <button class="prod" data-pos="1" type="button" aria-label="Show the matcha latte" style="--k:1.05"><span class="bob"><img src="assets/cut/matcha.png" alt="A matcha latte with a cinnamon swirl on a red saucer, seen from above"></span></button>
-    <button class="prod" data-pos="2" type="button" aria-label="Show hot coffee" style="--k:1.12"><span class="bob"><img src="assets/cut/espresso.png" alt="A hot espresso with golden crema in a white cup"></span></button>
-    <button class="prod" data-pos="-2" type="button" aria-label="Show the stand" style="--k:1.15"><span class="bob"><img src="assets/cut/stand.png" alt="The Fly Me to the Brew coffee stand with espresso machine, cups and syrups"></span></button>
-    <button class="prod" data-pos="-1" type="button" aria-label="Show the lobby" style="--k:1.1"><span class="bob"><img src="assets/cut/crew.png" alt="Two customers holding up Fly Me to the Brew cups in the YMCA lobby"></span></button>
+    <button class="prod" data-pos="0" type="button" aria-label="Show the iced americano" style="--k:1.12"><span class="bob"><img src="assets/cut/sip-americano.png" alt="Iced Americano: an iced americano over ice in a clear cup with a Fly Me to the Brew sticker" fetchpriority="high"></span></button>
+    <button class="prod" data-pos="1" type="button" aria-label="Show the iced vanilla latte" style="--k:1.12"><span class="bob"><img src="assets/cut/sip-vanilla.png" alt="Iced Vanilla Latte: an iced vanilla latte, creamy milk swirling into espresso"></span></button>
+    <button class="prod" data-pos="2" type="button" aria-label="Show the cappuccino" style="--k:1.12"><span class="bob"><img src="assets/cut/sip-cappuccino.png" alt="Cappuccino: a cappuccino in a black cup with leaf latte art"></span></button>
+    <button class="prod" data-pos="2" type="button" aria-label="Show the iced matcha latte" style="--k:1.12"><span class="bob"><img src="assets/cut/sip-matcha.png" alt="Iced Matcha Latte: an iced matcha latte, green over cream"></span></button>
+    <button class="prod" data-pos="-2" type="button" aria-label="Show the iced chai latte" style="--k:1.12"><span class="bob"><img src="assets/cut/sip-chai.png" alt="Iced Chai Latte: an iced chai latte"></span></button>
+    <button class="prod" data-pos="-1" type="button" aria-label="Show the iced dirty chai" style="--k:1.12"><span class="bob"><img src="assets/cut/sip-dirty.png" alt="Iced Dirty Chai: an iced dirty chai with espresso swirled through"></span></button>
     <div class="stage-word" aria-hidden="true">
-      <span class="w on" style="--n:10">house latte</span>
-      <span class="w" style="--n:12">matcha latte</span>
-      <span class="w" style="--n:10">hot coffee</span>
-      <span class="w" style="--n:9">the stand</span>
-      <span class="w" style="--n:9">the lobby</span>
+      <span class="w on" style="--n:14">iced americano</span>
+      <span class="w" style="--n:18">iced vanilla latte</span>
+      <span class="w" style="--n:10">cappuccino</span>
+      <span class="w" style="--n:17">iced matcha latte</span>
+      <span class="w" style="--n:15">iced chai latte</span>
+      <span class="w" style="--n:15">iced dirty chai</span>
     </div>
   </div>
 
@@ -98,7 +100,7 @@
           <span class="td-text"><small>The stand</small><b>Inside the YMCA lobby</b><span>See today's hours</span></span>
           <span class="td-go" aria-hidden="true">→</span>
         </a>
-        <div class="slide-count" aria-hidden="true"><span id="slide-name">house latte</span><b class="num" id="cur">01</b><i>/ 05</i></div>
+        <div class="slide-count" aria-hidden="true"><span id="slide-name">iced americano</span><b class="num" id="cur">01</b><i>/ 06</i></div>
         <div class="dots" id="dots" role="group" aria-label="Choose a drink"></div>
       </div>
     </div>
@@ -147,7 +149,7 @@
   <div class="wrap">
     <div class="head">
       <h2 data-reveal>What are you <span class="script">sipping?</span></h2>
-      <p data-reveal style="--d:.1s">Everything is made to order, hot or iced. Prices are what's on the board at the stand.</p>
+      <p data-reveal style="--d:.1s">Everything is made to order. Prices are what's on the board at the stand, and tax is already included.</p>
     </div>
 
     <div class="temp-row" data-reveal style="--d:.15s">
@@ -168,12 +170,14 @@
           <img class="cat-img round" src="assets/web/real-hotchai.jpg" alt="" loading="lazy">
         </div>
         <ul class="rows">
-          <li><span class="n">Espresso</span><span class="sz">4 oz</span><span class="fill"></span><span class="p">$3.00</span></li>
-          <li><span class="n">Cortadito</span><span class="sz">4 oz</span><span class="fill"></span><span class="p">$3.50</span></li>
-          <li><span class="n">Cortado</span><span class="sz">8 oz</span><span class="fill"></span><span class="p">$3.75</span></li>
-          <li><span class="n">Americano</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$3.50</span></li>
-          <li><span class="n">Coffee latte</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$4.75</span></li>
-          <li><span class="n">Hot chocolate</span><span class="sz">8 oz</span><span class="fill"></span><span class="p">$3.50</span></li>
+          <li><span class="n">Espresso</span><span class="sz">4 oz</span><span class="fill"></span><span class="p">$3.26</span></li>
+          <li><span class="n">Cortadito</span><span class="sz">4 oz</span><span class="fill"></span><span class="p">$3.80</span></li>
+          <li><span class="n">Cortado</span><span class="sz">8 oz</span><span class="fill"></span><span class="p">$4.07</span></li>
+          <li><span class="n">Americano</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$3.80</span></li>
+          <li><span class="n">Coffee latte</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$5.16</span></li>
+          <li><span class="n">Cappuccino</span><span class="sz">8 oz</span><span class="fill"></span><span class="p">$4.34</span></li>
+          <li><span class="n">Mochaccino</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$5.91</span></li>
+          <li><span class="n">Colada</span><span class="sz">4 oz</span><span class="fill"></span><span class="p">$4.07</span></li>
         </ul>
         <button class="flip-btn" type="button" data-flip>See it iced <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 4l3 2 3-2M9 20l3-2 3 2"/></svg></button>
       </article>
@@ -184,12 +188,10 @@
           <img class="cat-img" src="assets/cut/latte.png" alt="" loading="lazy" style="width:clamp(60px,7vw,90px)">
         </div>
         <ul class="rows">
-          <li><span class="n">Americano</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$4.95</span></li>
-          <li><span class="n">Caramel latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$5.95</span></li>
-          <li><span class="n">French vanilla latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$5.95</span></li>
-          <li><span class="n">Hazelnut latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$5.95</span></li>
-          <li><span class="n">Vanilla latte</span><span class="sz">4 oz</span><span class="fill"></span><span class="p">$5.95</span></li>
+          <li><span class="n">Americano</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$5.37</span></li>
+          <li><span class="n">Coffee latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$6.46</span></li>
         </ul>
+        <p class="tagline">One flavor is included with the latte.</p>
         <button class="flip-btn" type="button" data-flip>Back to hot <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M8 3c-2 3 2 4 0 7M13 3c-2 3 2 4 0 7M18 3c-2 3 2 4 0 7M4 14h16v1.5a5.5 5.5 0 0 1-5.5 5.5h-5A5.5 5.5 0 0 1 4 15.5z"/></svg></button>
       </article>
         </div>
@@ -203,10 +205,10 @@
           <img class="cat-img" src="assets/cut/matcha.png" alt="" loading="lazy">
         </div>
         <ul class="rows">
-          <li><span class="n">Matcha latte</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$4.95</span></li>
-          <li><span class="n">Dirty matcha latte</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$5.95</span></li>
-          <li><span class="n">Chai latte</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$4.95</span></li>
-          <li><span class="n">Dirty chai latte</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$5.95</span></li>
+          <li><span class="n">Matcha latte</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$5.37</span></li>
+          <li><span class="n">Dirty matcha latte</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$6.46</span></li>
+          <li><span class="n">Chai latte</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$5.37</span></li>
+          <li><span class="n">Dirty chai latte</span><span class="sz">12 oz</span><span class="fill"></span><span class="p">$6.46</span></li>
         </ul>
         <button class="flip-btn" type="button" data-flip>See it iced <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 4l3 2 3-2M9 20l3-2 3 2"/></svg></button>
       </article>
@@ -216,16 +218,40 @@
           <h3>Iced tea <span class="script">Matcha &amp; chai, over ice</span></h3>
         </div>
         <ul class="rows">
-          <li><span class="n">Matcha latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$5.95</span></li>
-          <li><span class="n">Dirty matcha latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$6.95</span></li>
-          <li><span class="n">Chai latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$5.95</span></li>
-          <li><span class="n">Dirty chai latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$6.95</span></li>
+          <li><span class="n">Matcha latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$6.46</span></li>
+          <li><span class="n">Dirty matcha latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$7.54</span></li>
+          <li><span class="n">Chai latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$6.46</span></li>
+          <li><span class="n">Dirty chai latte</span><span class="sz">16 oz</span><span class="fill"></span><span class="p">$7.54</span></li>
         </ul>
         <p class="tagline">"Dirty" means a shot of espresso in it.</p>
         <button class="flip-btn" type="button" data-flip>Back to hot <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M8 3c-2 3 2 4 0 7M13 3c-2 3 2 4 0 7M18 3c-2 3 2 4 0 7M4 14h16v1.5a5.5 5.5 0 0 1-5.5 5.5h-5A5.5 5.5 0 0 1 4 15.5z"/></svg></button>
       </article>
         </div>
       </div>
+      <article class="cat kids-cat" data-reveal>
+        <div class="cat-top">
+          <h3>Kids <span class="script">For the small crew</span></h3>
+        </div>
+        <ul class="rows">
+          <li><span class="n">Hot chocolate</span><span class="fill"></span><span class="p">$3.80</span></li>
+          <li><span class="n">Slushies</span><span class="fill"></span><span class="p">$3.99</span></li>
+          <li><span class="n">Water bottle</span><span class="fill"></span><span class="p">$1.99</span></li>
+        </ul>
+      </article>
+      <article class="cat syrup-cat" data-reveal style="--d:.08s">
+        <div class="cat-top">
+          <h3>Flavor syrups <span class="script">Pick your flavor</span></h3>
+        </div>
+        <div class="syrups">
+          <span>Vanilla <small>sugar free</small></span>
+          <span>Caramel</span>
+          <span>French vanilla</span>
+          <span>Almond</span>
+          <span>White chocolate</span>
+          <span>Marshmallow</span>
+          <span class="seasonal"><b>Seasonal</b> Pumpkin spice</span>
+        </div>
+      </article>
       <article class="cat wide flavor-cat" data-reveal>
         <div class="cat-top">
           <h3>Pilot upgrades <span class="script">Make it yours</span></h3>
@@ -237,7 +263,7 @@
           <span class="flv"><span class="sw">+$0.50</span>Whipped cream</span>
           <span class="flv"><span class="sw">+$1.00</span>Extra espresso shot</span>
         </div>
-        <p class="menu-note">Sugar-free flavor shots are available too, just ask at the stand.</p>
+        <p class="menu-note">A flavor shot can be any syrup above, including the sugar-free vanilla.</p>
       </article>
     </div>
     <div class="menu-order" data-reveal>
