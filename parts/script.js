@@ -27,6 +27,7 @@ const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds
   document.querySelectorAll('[data-phone]').forEach(el => {
     const d = decodePhone(el.getAttribute('data-phone'));
     if (el.hasAttribute('data-phone-link')) el.setAttribute('href', 'tel:+1' + d);
+    if (el.hasAttribute('data-sms-link')) el.setAttribute('href', 'sms:+1' + d);
     if (el.hasAttribute('data-phone-text')) el.textContent = '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
   });
 
@@ -53,15 +54,15 @@ const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds
     scrollTo({top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth'});
   });
 
-  // ---------- Call buttons: phones dial; computers get a small card with the number ----------
+  // ---------- Text-to-order buttons: phones open a text message; computers get a small card with the number ----------
   const callbox = document.getElementById('callbox');
   const canDial = matchMedia('(pointer:coarse)').matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   const closeCall = () => { callbox.hidden = true; };
   document.addEventListener('click', e => {
-    const a = e.target.closest('[data-phone-link]');
+    const a = e.target.closest('[data-sms-link]');
     if (!a || canDial || a.closest('#callbox')) return;
     e.preventDefault(); setMenu(false); callbox.hidden = false;
-    document.getElementById('cb-hint').textContent = 'On a computer? Copy it, or open this page on your phone and tap Call.';
+    document.getElementById('cb-hint').textContent = 'On a computer? Copy it, or open this page on your phone and tap Text.';
     document.getElementById('cb-copy').focus();
   });
   callbox.addEventListener('click', e => { if (e.target === callbox || e.target.closest('[data-close]')) closeCall(); });
@@ -70,6 +71,15 @@ const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds
     try { await navigator.clipboard.writeText(num); h.textContent = 'Copied ' + num + '. Paste it into your phone.'; }
     catch { const r = document.createRange(); r.selectNodeContents(document.getElementById('cb-num')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); h.textContent = 'Number selected. Press Ctrl/Cmd+C to copy it.'; }
   });
+
+  // top nav: light up the link for the section you are in
+  const navLinks = [...document.querySelectorAll('.nav a')].map(a => ({a, el: document.querySelector(a.getAttribute('href'))})).filter(x => x.el);
+  const spy = () => {
+    const mid = scrollY + innerHeight * .4; let cur = null;
+    navLinks.forEach(x => { if (x.el.offsetTop <= mid && x.el.offsetTop + x.el.offsetHeight > mid) cur = x; });
+    navLinks.forEach(x => x.a.classList.toggle('on', x === cur));
+  };
+  addEventListener('scroll', spy, {passive:true}); addEventListener('resize', spy); spy();
 
   // header: background on scroll, hides scrolling down, shows scrolling up
   const top = document.getElementById('top');
