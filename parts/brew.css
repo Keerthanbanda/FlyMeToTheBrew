@@ -466,3 +466,8 @@ body.menu-open .flight{display:none}
 .syrups .seasonal{background:var(--orange);box-shadow:none;color:var(--ink)}
 .syrups .seasonal b{font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:var(--ink);color:var(--cream);padding:.25em .6em;border-radius:99px}
 .kids-cat .rows .n{flex:none}
+
+/* photo of the stand under the visit details */
+.stand-photo{margin:1.8rem 0 0;border-radius:26px;overflow:hidden;background:var(--paper);box-shadow:0 24px 50px -34px rgba(60,40,0,.6)}
+.stand-photo img{display:block;width:100%;height:auto}
+.stand-photo figcaption{padding:.8rem 1.1rem;font-size:.9rem;font-weight:700;color:var(--ink-soft)}
