@@ -4,6 +4,8 @@
    [open, close] in 24h decimal hours (9.5 = 9:30 AM), Orlando time.
    null = closed. The hero card, the floating button and the
    hours list on the page all read from this one object.
+   (Type them in 24h like 19 for 7 PM; the board shows normal time.
+   The board row fits up to 11 characters, like 9:30AM-7PM.)
    ========================================================= */
 const HOURS = {
   0: null,
@@ -194,7 +196,9 @@ const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds
   // ---------- 1. departures board: the hours as split-flap rows, built from HOURS ----------
   const FD = 60;                                  // one half-flip, in ms
   let gen = 0;                                    // bumped when the board is wiped, so half-finished flips from the last run stop
-  const h24 = h => { const m = Math.round(h * 60); return String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
+  // normal (12-hour) time for the board: 6AM, 9:30AM, 7PM. The clock always shows minutes: 9:43PM
+  const h12 = (h, mins) => { const m = Math.round(h * 60), hh = Math.floor(m / 60) % 24, mm = m % 60; return ((hh + 11) % 12 + 1) + (mm || mins ? ':' + String(mm).padStart(2, '0') : '') + (hh >= 12 ? 'PM' : 'AM'); };
+  const hoursOpen = (a, b) => { const n = Math.round((b - a) * 2) / 2; return (n % 1 ? n.toFixed(1) : n) + (n === 1 ? ' hour' : ' hours'); };
   const put = (c, ch) => { c._c = ch; for (const i of c.children) i.textContent = ch; c.classList.toggle('blank', ch === ' '); };
   const mkCell = () => { const c = document.createElement('span'); c.className = 'fc blank'; c.innerHTML = '<i class="a"></i><i class="b"></i><i class="ft"></i><i class="fb"></i>'; c._c = ' '; return c; };
   const mkGroup = (n, cls) => { const g = document.createElement('span'); g.className = 'g ' + (cls || ''); for (let i = 0; i < n; i++) g.appendChild(mkCell()); return g; };
@@ -235,7 +239,7 @@ const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds
     if (f.d !== now.day || now.t < f.a) return 'ON TIME';
     return now.t < f.b ? 'BOARDING' : 'DEPARTED';
   };
-  clockEl.appendChild(mkGroup(5)); const clockG = clockEl.firstChild;
+  clockEl.appendChild(mkGroup(7)); const clockG = clockEl.firstChild;
   flights.forEach(f => {
     const r = document.createElement('div'); r.className = 'dep-row';
     const tm = document.createElement('div'); tm.className = 'tm';
@@ -246,15 +250,15 @@ const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds
   let boardOn = false;
   const paintBoard = (anim, stagger) => {
     const now = nowET();
-    clockG.parentNode && setText(clockG, h24(now.t), anim);
+    clockG.parentNode && setText(clockG, h12(now.t, true), anim);
     srEl.innerHTML = '';
     flights.forEach((f, i) => {
       const s = depStatus(f, now), base = stagger ? i * 150 : 0;
       f.row.dataset.s = s.toLowerCase().replace(' ', '');
       f.row.classList.toggle('is-today', f.d === now.day);
-      f.t12.textContent = f.a == null ? 'Closed all day' : nb(fmt(f.a) + ' – ' + fmt(f.b));
+      f.t12.textContent = f.a == null ? 'Closed all day' : hoursOpen(f.a, f.b);
       setText(f.dy, DAYS[f.d].slice(0, 3).toUpperCase(), anim, base);
-      setText(f.tg, f.a == null ? '——' : h24(f.a) + '–' + h24(f.b), anim, base + 60);
+      setText(f.tg, f.a == null ? '——' : h12(f.a) + '–' + h12(f.b), anim, base + 60);
       setText(f.st, s, anim, base + 260);
       const li = document.createElement('li');
       li.textContent = DAYS[f.d] + ': ' + (f.a == null ? 'closed' : fmt(f.a) + ' to ' + fmt(f.b)) + ', ' + s.toLowerCase() + (f.d === now.day ? ' (today)' : '');
