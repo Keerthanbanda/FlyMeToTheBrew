@@ -3,9 +3,24 @@
   parts/brew.css  Fly Me to the Brew colors + new components (loaded after base, so it wins)
   parts/body.html page markup      parts/script.js  behaviour (hours + 1.5 s sliders live here)
 Run:  python3 build.py     -> writes index.html (images inlined as base64) + index.dev.html (links to assets/)"""
-import base64, re, pathlib
+import base64, json, re, pathlib
 root = pathlib.Path(__file__).parent
 p = lambda n: (root / "parts" / n).read_text(encoding="utf-8")
+
+# Google reads opening hours from the JSON-LD block below. Build it from the same
+# HOURS object the page uses (parts/script.js), so changing HOURS updates both.
+DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+def google_hours():
+    block = re.search(r"const HOURS = \{(.*?)\n\};", p("script.js"), re.S).group(1)
+    spans = {}                                   # (open, close) -> days with that shift
+    for d, val in re.findall(r"^\s*(\d):\s*(null|\[.*\])", block, re.M):
+        for a, b in json.loads(val) or []:
+            spans.setdefault((a, b), []).append(DAYS[int(d)])
+    hhmm = lambda h: f"{int(h):02d}:{round(h % 1 * 60):02d}"
+    return ",\n".join(json.dumps({"@type": "OpeningHoursSpecification",
+                                  "dayOfWeek": days if len(days) > 1 else days[0],
+                                  "opens": hhmm(a), "closes": hhmm(b)}, separators=(",", ":"))
+                      for (a, b), days in spans.items())
 
 head = """<!doctype html>
 <html lang="en">
@@ -26,9 +41,7 @@ head = """<!doctype html>
 {"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"Fly Me to the Brew","address":{"@type":"PostalAddress","streetAddress":"9055 Northlake Pkwy (YMCA lobby)","addressLocality":"Orlando","addressRegion":"FL","postalCode":"32827"},
 "sameAs":["https://www.instagram.com/flyme2thebrew/"],"servesCuisine":"Coffee","aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"2"},
 "openingHoursSpecification":[
-{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"12:00"},
-{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"16:00","closes":"19:00"},
-{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"14:00"}]}
+""" + google_hours() + """]}
 </script>
 <style>
 """ + p("base.css") + "\n" + p("brew.css") + """
