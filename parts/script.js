@@ -5,7 +5,7 @@
    null = closed. The hero card, the floating button and the
    hours list on the page all read from this one object.
    (Type them in 24h like 19 for 7 PM; the board shows normal time.
-   The board row fits up to 11 characters, like 9:30AM-7PM.)
+   The board fits two shifts on a line, like 8AM-12PM 4PM-7PM.)
    ========================================================= */
 const HOURS = {
   0: null,
@@ -233,17 +233,23 @@ const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds
 
   const hoursEl = document.getElementById('hours'), srEl = document.getElementById('hours-sr'), clockEl = document.getElementById('dep-clock');
   const flights = [];
-  [1, 2, 3, 4, 5, 6, 0].forEach(d => HOURS[d] ? HOURS[d].forEach(([a, b]) => flights.push({d, a, b})) : flights.push({d}));
+  [1, 2, 3, 4, 5, 6, 0].forEach(d => flights.push({d, r: HOURS[d]}));   // one row per day, both shifts on the same line
   const depStatus = (f, now) => {
-    if (f.a == null) return 'CANCELLED';
-    if (f.d !== now.day || now.t < f.a) return 'ON TIME';
-    return now.t < f.b ? 'BOARDING' : 'DEPARTED';
+    if (!f.r) return 'CANCELLED';
+    if (f.d !== now.day) return 'ON TIME';
+    if (now.t >= f.r[f.r.length - 1][1]) return 'DEPARTED';
+    return f.r.some(([a, b]) => now.t >= a && now.t < b) ? 'BOARDING' : 'ON TIME';
   };
+  // "8AM–12PM 4PM–7PM": a day's shifts on one line
+  const spanText = f => f.r ? f.r.map(([a, b]) => h12(a) + '–' + h12(b)).join(' ') : '——';
+  const capText = f => !f.r ? 'Closed all day'
+    : f.r.length === 1 ? hoursOpen(f.r[0][0], f.r[0][1])
+    : 'Lunch ' + h12(f.r[0][1]) + '–' + h12(f.r[1][0]);
   clockEl.appendChild(mkGroup(7)); const clockG = clockEl.firstChild;
   flights.forEach(f => {
     const r = document.createElement('div'); r.className = 'dep-row';
     const tm = document.createElement('div'); tm.className = 'tm';
-    f.dy = mkGroup(3, 'dy'); f.tg = mkGroup(11); f.st = mkGroup(9, 'st');
+    f.dy = mkGroup(3, 'dy'); f.tg = mkGroup(16); f.st = mkGroup(9, 'st');
     f.t12 = document.createElement('small'); f.t12.className = 't12';
     tm.append(f.tg, f.t12); r.append(f.dy, tm, f.st); hoursEl.appendChild(r); f.row = r;
   });
@@ -256,12 +262,12 @@ const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds
       const s = depStatus(f, now), base = stagger ? i * 150 : 0;
       f.row.dataset.s = s.toLowerCase().replace(' ', '');
       f.row.classList.toggle('is-today', f.d === now.day);
-      f.t12.textContent = f.a == null ? 'Closed all day' : hoursOpen(f.a, f.b);
+      f.t12.textContent = capText(f);
       setText(f.dy, DAYS[f.d].slice(0, 3).toUpperCase(), anim, base);
-      setText(f.tg, f.a == null ? '——' : h12(f.a) + '–' + h12(f.b), anim, base + 60);
+      setText(f.tg, spanText(f), anim, base + 60);
       setText(f.st, s, anim, base + 260);
       const li = document.createElement('li');
-      li.textContent = DAYS[f.d] + ': ' + (f.a == null ? 'closed' : fmt(f.a) + ' to ' + fmt(f.b)) + ', ' + s.toLowerCase() + (f.d === now.day ? ' (today)' : '');
+      li.textContent = DAYS[f.d] + ': ' + (!f.r ? 'closed' : f.r.map(([a, b]) => fmt(a) + ' to ' + fmt(b)).join(' and ')) + ', ' + s.toLowerCase() + (f.d === now.day ? ' (today)' : '');
       srEl.appendChild(li);
     });
   };

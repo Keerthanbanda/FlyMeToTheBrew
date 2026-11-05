@@ -503,3 +503,12 @@ body.menu-open .flight{display:none}
 /* the board clock now has 7 cells (9:43PM); keep them on one line */
 .dep-clock .g{display:inline-flex;flex-wrap:nowrap;gap:2px}
 @media (max-width:600px){.dep-clock .dc{--cw:12px}.dep-clock .g{--cw:12px}.dep-clock{gap:.4em}}
+
+/* both shifts on one line: 16 time cells instead of 11, so the cells are sized for 28 and the board gets more room */
+.dep{--cw:min(22px,calc((100cqw - 3.6rem) / 28.4 - 2px))}
+.dep-grid{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
+@container (max-width:469px){
+  .dep{--cw:min(17px,calc((100cqw - 2.8rem - 84px - 16px) / 12 - 2px));--cwt:min(26px,calc((100cqw - 3.1rem) / 16 - 3px))}
+}
+@media (max-width:900px){.dep-grid{grid-template-columns:1fr}}
+@container (max-width:469px){.dep-row .t12{font-size:.6rem;letter-spacing:0}.dep-row{column-gap:6px}}
