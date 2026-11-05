@@ -17,11 +17,9 @@
 {"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"Fly Me to the Brew","address":{"@type":"PostalAddress","streetAddress":"9055 Northlake Pkwy (YMCA lobby)","addressLocality":"Orlando","addressRegion":"FL","postalCode":"32827"},
 "sameAs":["https://www.instagram.com/flyme2thebrew/"],"servesCuisine":"Coffee","aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"2"},
 "openingHoursSpecification":[
-{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday"],"opens":"06:00","closes":"11:00"},
-{"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday","Thursday"],"opens":"09:30","closes":"19:00"},
-{"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"09:30","closes":"13:00"},
-{"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"16:00","closes":"19:00"},
-{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"08:00","closes":"14:00"}]}
+{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"12:00"},
+{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"16:00","closes":"19:00"},
+{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"14:00"}]}
 </script>
 <style>
 
@@ -1139,10 +1137,9 @@ body.menu-open .flight{display:none}
     <div class="dep-copy" data-par=".08">
       <span class="eyebrow" data-reveal>Opening hours</span>
       <h2 data-reveal style="--d:.05s">Now <span class="script">boarding.</span></h2>
-      <p data-reveal style="--d:.1s">Six flights a week from the YMCA lobby, closed Sundays. Today's flight is lit up on the board.</p>
+      <p data-reveal style="--d:.1s">Open Monday to Saturday, closed Sundays. Today's hours are highlighted below.</p>
       <div class="btn-row" data-reveal style="--d:.15s">
         <a class="btn" href="#" data-phone="3882591042" data-sms-link>Text to order <span class="arr" aria-hidden="true">→</span></a>
-        <a class="btn ghost" href="#find-us">Get directions</a>
       </div>
     </div>
       <div class="dep-wrap" data-par="-.05" data-reveal style="--d:.1s">
@@ -1155,7 +1152,7 @@ body.menu-open .flight{display:none}
           <div class="dep-rows" id="hours" aria-hidden="true"></div>
           <ul class="sr-only" id="hours-sr"></ul>
         </div>
-        <p class="dep-note">Board times are Orlando time. Today's flight is lit up.</p>
+        <p class="dep-note">Times are Orlando time. Today's hours are highlighted.</p>
       </div>
   </div>
 </section>
@@ -1300,8 +1297,7 @@ body.menu-open .flight{display:none}
     <div class="find-copy" data-par=".06">
       <span class="eyebrow" data-reveal>Visit</span>
       <h2 data-reveal style="--d:.05s">Come fly <span class="script">with us.</span></h2>
-      <p data-reveal style="--d:.1s">Find the yellow letters on the blue wall, just inside the lobby. Text ahead or come straight in.</p>
-      <p class="hours-link" data-reveal style="--d:.12s">Opening hours live on <a href="#departures">the departures board</a> near the top of the page. Today's flight is lit up there.</p>
+      <p class="hours-link" data-reveal style="--d:.12s">Our opening hours are listed near the top of the page, with today's hours highlighted. <a href="#departures">See the hours</a>.</p>
       <dl class="facts" data-reveal style="--d:.15s">
         <div><dt>Address</dt><dd><a href="https://www.google.com/maps/search/?api=1&amp;query=Fly+Me+to+the+Brew%2C+9055+Northlake+Pkwy%2C+Orlando%2C+FL+32827" target="_blank" rel="noopener">9055 Northlake Pkwy<br>YMCA lobby, Orlando, FL 32827</a></dd></div>
         <div><dt>Text to order</dt><dd><a href="#" data-phone="3882591042" data-phone-text data-sms-link>Loading…</a></dd></div>
@@ -1382,12 +1378,12 @@ body.menu-open .flight{display:none}
    ========================================================= */
 const HOURS = {
   0: null,
-  1: [[6, 11]],
-  2: [[6, 11]],
-  3: [[9.5, 19]],
-  4: [[9.5, 19]],
-  5: [[9.5, 13], [16, 19]],
-  6: [[8, 14]],
+  1: [[8, 12], [16, 19]],   // Monday to Friday: 8 AM to noon, lunch break, 4 PM to 7 PM
+  2: [[8, 12], [16, 19]],
+  3: [[8, 12], [16, 19]],
+  4: [[8, 12], [16, 19]],
+  5: [[8, 12], [16, 19]],
+  6: [[9, 14]],             // Saturday: 9 AM to 2 PM
 };
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds

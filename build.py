@@ -26,11 +26,9 @@ head = """<!doctype html>
 {"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"Fly Me to the Brew","address":{"@type":"PostalAddress","streetAddress":"9055 Northlake Pkwy (YMCA lobby)","addressLocality":"Orlando","addressRegion":"FL","postalCode":"32827"},
 "sameAs":["https://www.instagram.com/flyme2thebrew/"],"servesCuisine":"Coffee","aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"2"},
 "openingHoursSpecification":[
-{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday"],"opens":"06:00","closes":"11:00"},
-{"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday","Thursday"],"opens":"09:30","closes":"19:00"},
-{"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"09:30","closes":"13:00"},
-{"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"16:00","closes":"19:00"},
-{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"08:00","closes":"14:00"}]}
+{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"12:00"},
+{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"16:00","closes":"19:00"},
+{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"14:00"}]}
 </script>
 <style>
 """ + p("base.css") + "\n" + p("brew.css") + """

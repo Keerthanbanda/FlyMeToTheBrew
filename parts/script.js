@@ -9,12 +9,12 @@
    ========================================================= */
 const HOURS = {
   0: null,
-  1: [[6, 11]],
-  2: [[6, 11]],
-  3: [[9.5, 19]],
-  4: [[9.5, 19]],
-  5: [[9.5, 13], [16, 19]],
-  6: [[8, 14]],
+  1: [[8, 12], [16, 19]],   // Monday to Friday: 8 AM to noon, lunch break, 4 PM to 7 PM
+  2: [[8, 12], [16, 19]],
+  3: [[8, 12], [16, 19]],
+  4: [[8, 12], [16, 19]],
+  5: [[8, 12], [16, 19]],
+  6: [[9, 14]],             // Saturday: 9 AM to 2 PM
 };
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds
