@@ -326,6 +326,11 @@ const SLIDE_MS = 3000;   // the hero slider changes every 3 seconds
     fcards.forEach(c => peekIO.observe(c));
   }
 
+  // seasonal specials hide themselves after their last day (Orlando date)
+  const today = new Date().toLocaleDateString('en-CA', {timeZone: 'America/New_York'});
+  document.querySelectorAll('[data-until]').forEach(el => { if (today > el.dataset.until) el.hidden = true; });
+  document.querySelectorAll('.monthly').forEach(w => { if ([...w.querySelectorAll('.special')].every(c => c.hidden)) w.hidden = true; });
+
   // reveal on entering the viewport, and undo it once the element is fully off screen so it plays again when you scroll back
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.intersectionRatio >= .15) e.target.classList.add('in');

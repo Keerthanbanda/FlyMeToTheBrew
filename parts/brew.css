@@ -512,3 +512,25 @@ body.menu-open .flight{display:none}
 }
 @media (max-width:900px){.dep-grid{grid-template-columns:1fr}}
 @container (max-width:469px){.dep-row .t12{font-size:.6rem;letter-spacing:0}.dep-row{column-gap:6px}}
+
+/* monthly special (from the owner's flyers) */
+.monthly{margin:0 0 clamp(26px,3.4vw,40px)}
+.sp-head h3{margin:0 0 1rem;font-size:clamp(2rem,3.6vw,3rem);font-variation-settings:"wdth" 85;letter-spacing:-.035em;line-height:1}
+.sp-head h3 .script{margin-left:.35em;font-size:.8em;color:var(--green)}
+.specials{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,2vw,24px)}
+.special{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"img txt" "img p";align-content:center;gap:.7rem clamp(16px,2vw,26px);background:var(--ink);color:var(--cream);border-radius:26px;padding:clamp(18px,2.2vw,28px);box-shadow:0 24px 50px -34px rgba(60,40,0,.7);position:relative;overflow:hidden}
+.special::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(closest-side,rgba(244,180,0,.3),rgba(244,180,0,0));pointer-events:none}
+.sp-img{grid-area:img;display:block;width:clamp(120px,12vw,160px);height:auto;border-radius:18px;box-shadow:0 14px 28px -14px rgba(0,0,0,.7)}
+.sp-txt{grid-area:txt;align-self:end}
+.special p{grid-area:p;margin:0;align-self:start;color:rgba(255,246,233,.82)}
+.sp-tag{display:inline-block;font:800 .7rem var(--f-display);letter-spacing:.14em;text-transform:uppercase;background:var(--orange);color:var(--ink);padding:.45em .9em;border-radius:99px}
+.special h3{margin:.7rem 0 0;font-size:clamp(1.5rem,2.3vw,2.1rem);font-variation-settings:"wdth" 85;letter-spacing:-.035em;line-height:1}
+.special h3 span{color:var(--orange)}
+.special .sp-when{font:800 1.1rem var(--f-display);color:#fff}
+.special[hidden],.monthly[hidden]{display:none}
+@media (max-width:760px){
+  .specials{grid-template-columns:1fr}
+  .special{grid-template-columns:104px 1fr;grid-template-areas:"img txt" "p p"}
+  .sp-img{width:104px;border-radius:16px}
+  .sp-txt{align-self:center}
+}
