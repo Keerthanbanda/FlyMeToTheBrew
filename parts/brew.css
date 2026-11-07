@@ -545,3 +545,4 @@ body.menu-open .flight{display:none}
 @media (max-width:860px){.specials{grid-template-columns:1fr}}
 @media (max-width:520px){.sp-photo{height:176px}.special{align-items:center}}
 }
+.special p + p{margin-top:.6rem}
