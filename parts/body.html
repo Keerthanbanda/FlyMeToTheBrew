@@ -152,29 +152,31 @@
     </div>
 
     <!-- Monthly special, from the owner's flyers. Hides itself after data-until (Orlando date). Next month: swap the text, the photos and the date. -->
-    <div class="monthly">
+    <section class="monthly" aria-labelledby="monthly-title">
+      <i class="leaf l1" aria-hidden="true"></i><i class="leaf l2" aria-hidden="true"></i><i class="leaf l3" aria-hidden="true"></i>
       <div class="sp-head" data-reveal>
-        <h3>Monthly special <span class="script">November</span></h3>
+        <span class="sp-eyebrow">November</span>
+        <h3 id="monthly-title">Monthly <span class="script">special</span></h3>
       </div>
       <div class="specials">
         <article class="special" data-reveal data-until="2026-11-30">
-          <img class="sp-img" src="assets/web/special-pumpkin.jpg" alt="Pumpkin Spice Crème Brûlée Latte: iced latte topped with vanilla cold foam and caramel drizzle, with a pumpkin and cinnamon sticks" loading="lazy" width="213" height="254">
+          <div class="sp-photo"><img src="assets/web/special-pumpkin.jpg" alt="Pumpkin Spice Crème Brûlée Latte: an iced latte under vanilla cold foam with caramel drizzle, beside a pumpkin and cinnamon sticks" loading="lazy" width="213" height="254"></div>
           <div class="sp-txt">
             <span class="sp-tag">Flavor of the month</span>
-            <h3>Pumpkin Spice Crème Brûlée <span>Latte</span></h3>
+            <h4>Pumpkin Spice Crème Brûlée <span>Latte</span></h4>
+            <p>Rich espresso blended with pumpkin spice and crème brûlée, topped with silky vanilla cold foam, caramel drizzle and a brûlée crunch.</p>
           </div>
-          <p>Rich espresso blended with pumpkin spice and crème brûlée, topped with silky vanilla cold foam, caramel drizzle and a brûlée crunch.</p>
         </article>
         <article class="special" data-reveal data-until="2026-11-30" style="--d:.08s">
-          <img class="sp-img" src="assets/web/special-cider.jpg" alt="Apple Cider Slush: an orange apple cider slush in a clear cup with apples and cinnamon sticks" loading="lazy" width="194" height="248">
+          <div class="sp-photo"><img src="assets/web/special-cider.jpg" alt="Apple Cider Slush: an orange apple cider slush in a clear cup with apples and cinnamon sticks" loading="lazy" width="194" height="248"></div>
           <div class="sp-txt">
             <span class="sp-tag">Available through November</span>
-            <h3>Apple Cider <span>Slush</span></h3>
+            <h4>Apple Cider <span>Slush</span></h4>
+            <p class="sp-when"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>Every Friday &amp; Saturday</p>
           </div>
-          <p class="sp-when">Every Friday &amp; Saturday</p>
         </article>
       </div>
-    </div>
+    </section>
 
     <div class="temp-row" data-reveal style="--d:.15s">
       <div class="tempswitch" id="tempswitch" role="group" aria-label="Show the whole menu hot or iced">
