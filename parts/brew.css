@@ -543,3 +543,16 @@ body.menu-open .flight{display:none}
 .special[hidden],.monthly[hidden]{display:none}
 @media (prefers-reduced-motion:reduce){.leaf,.sp-posters img{animation:none}}
 @media (max-width:860px){.monthly{grid-template-columns:1fr}.sp-posters{width:min(78%,300px);justify-self:center}.leaf.l2{right:8%}}
+
+/* phones: each drink gets its own poster right under its own title; the overlapping stack is for wider screens */
+.sp-poster{display:none;margin:0}
+@media (max-width:860px){
+  .sp-posters{display:none}
+  .sp-poster{display:block;position:relative;margin:1.3rem auto 0;width:min(82%,330px)}
+  .sp-poster::before{content:"";position:absolute;left:50%;top:50%;width:140%;aspect-ratio:1;translate:-50% -50%;z-index:-1;background:radial-gradient(closest-side,rgba(255,176,70,.35),rgba(255,176,70,0))}
+  .sp-poster img{display:block;width:100%;height:auto;border-radius:7% / 6.5%;filter:drop-shadow(0 18px 20px rgba(15,3,0,.5));animation:spfloat 7s ease-in-out infinite}
+  .special:nth-child(1) .sp-poster img{rotate:-1.5deg}
+  .special:nth-child(2) .sp-poster img{rotate:1.5deg;animation-delay:-3s}
+  .special p{max-width:none}
+}
+@media (max-width:860px) and (prefers-reduced-motion:reduce){.sp-poster img{animation:none}}
